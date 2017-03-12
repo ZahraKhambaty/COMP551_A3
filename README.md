@@ -6,5 +6,6 @@ Scipy: '0.18.1'
 Matplotlib: '1.5.3'
 Theano: '0.9.0dev4'
 Lasagne: '0.2.dev1'
+sklearn: '0.18'
 ```
 
