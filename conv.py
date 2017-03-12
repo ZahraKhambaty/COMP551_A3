@@ -153,7 +153,7 @@ def main():
 	#for epoch in xrange(epochs):            #use for epoch training
 	while (time.time()-startTime)/3600 < trainTime :     #use for time training
 		epochTime = time.time()
-		print ("--> Epoch: %d | Time left: %.2f hour(s)"%(epoch,trainTime-timeElapsed/3600))
+		print ("--> Epoch: %d | Time left: %.2f hour(s)"%(epoch,trainTime-(time.time()-startTime)/3600))
 		chunk = int(math.ceil(trainingSet.shape[0]/samplesperEpoch))
 		for i in xrange(samplesperEpoch):
 
