@@ -1,3 +1,4 @@
-data
+*.npy
+*.csv
 *.npz
 *.pickle
