@@ -25,16 +25,19 @@ def createNetwork(dimensions, input_var):
 	print '	',lasagne.layers.get_output_shape(network)
 	print ('Hidden Layer:')
 
-	#network = lasagne.layers.Conv2DLayer(network, num_filters=64, filter_size=(5,5), pad ='same',nonlinearity=lasagne.nonlinearities.rectify)
+	network = lasagne.layers.Conv2DLayer(network, num_filters=64, filter_size=(5,5), pad ='same',nonlinearity=lasagne.nonlinearities.rectify)
 	network = lasagne.layers.Conv2DLayer(network, num_filters=128, filter_size=(5,5), pad ='same',nonlinearity=lasagne.nonlinearities.rectify)
 	network = lasagne.layers.MaxPool2DLayer(network,pool_size=(2, 2))
 	print '	',lasagne.layers.get_output_shape(network)
 	
-	#network = lasagne.layers.Conv2DLayer(network, num_filters=128, filter_size=(3,3), pad='same',nonlinearity=lasagne.nonlinearities.rectify)
+	#network = lasagne.layers.BatchNormLayer(network)
+
+	network = lasagne.layers.Conv2DLayer(network, num_filters=128, filter_size=(3,3), pad='same',nonlinearity=lasagne.nonlinearities.rectify)
 	network = lasagne.layers.Conv2DLayer(network, num_filters=256, filter_size=(3,3), pad='same',nonlinearity=lasagne.nonlinearities.rectify)
 	network = lasagne.layers.MaxPool2DLayer(network,pool_size=(2, 2))
 	print '	',lasagne.layers.get_output_shape(network)
 	
+	#network = lasagne.layers.BatchNormLayer(network)
 	#network = lasagne.layers.Conv2DLayer(network, num_filters=256, filter_size=(3,3), pad='same',nonlinearity=lasagne.nonlinearities.rectify)
 	network = lasagne.layers.Conv2DLayer(network, num_filters=256, filter_size=(3,3), pad='same',nonlinearity=lasagne.nonlinearities.rectify)
 	network = lasagne.layers.MaxPool2DLayer(network,pool_size=(2, 2))
@@ -106,7 +109,7 @@ def main():
 	#MODIFY THESE
 	#*******************************************
 	trainTime = 1 #in hours
-	modelName='A3'
+	modelName='A3_3layer'
 	#*******************************************
 
 
@@ -165,8 +168,9 @@ def main():
 			sys.stdout.flush()
 			sys.stdout.write("\r %d training steps complete: %.2f%% done epoch in %ds" % (i + 1, percentage, timeElapsed))
 
-		tr_error, tr_accuracy = validator(trainingSet[:4000], trainingLabel[:4000])
-		v_error, v_accuracy = validator(validationSet[:4000], validationLabel[:4000])			     #pass modified data through network
+		limit = 3000
+		tr_error, tr_accuracy = validator(trainingSet[:limit], trainingLabel[:limit])
+		v_error, v_accuracy = validator(validationSet[:limit], validationLabel[:limit])			     #pass modified data through network
 		record['tr_error'].append(tr_error); record['tr_accuracy'].append(tr_accuracy)
 		record['v_error'].append(v_error); record['v_accuracy'].append(v_accuracy)
 		record['epoch'].append(epoch)
