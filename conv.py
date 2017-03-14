@@ -25,30 +25,34 @@ def createNetwork(dimensions, input_var):
 	print '	',lasagne.layers.get_output_shape(network)
 	print ('Hidden Layer:')
 
-	network = lasagne.layers.Conv2DLayer(network, num_filters=64, filter_size=(5,5), pad ='same',nonlinearity=lasagne.nonlinearities.rectify)
+	#network = lasagne.layers.Conv2DLayer(network, num_filters=64, filter_size=(5,5), pad ='same',nonlinearity=lasagne.nonlinearities.rectify)
 	network = lasagne.layers.Conv2DLayer(network, num_filters=128, filter_size=(5,5), pad ='same',nonlinearity=lasagne.nonlinearities.rectify)
 	network = lasagne.layers.MaxPool2DLayer(network,pool_size=(2, 2))
 	print '	',lasagne.layers.get_output_shape(network)
 	
 	#network = lasagne.layers.BatchNormLayer(network)
 
-	network = lasagne.layers.Conv2DLayer(network, num_filters=128, filter_size=(3,3), pad='same',nonlinearity=lasagne.nonlinearities.rectify)
-	network = lasagne.layers.Conv2DLayer(network, num_filters=256, filter_size=(3,3), pad='same',nonlinearity=lasagne.nonlinearities.rectify)
+	#network = lasagne.layers.Conv2DLayer(network, num_filters=128, filter_size=(3,3), pad='same',nonlinearity=lasagne.nonlinearities.rectify)
+	network = lasagne.layers.Conv2DLayer(network, num_filters=256, filter_size=(5,5), pad='same',nonlinearity=lasagne.nonlinearities.rectify)
 	network = lasagne.layers.MaxPool2DLayer(network,pool_size=(2, 2))
 	print '	',lasagne.layers.get_output_shape(network)
 	
 	#network = lasagne.layers.BatchNormLayer(network)
 	#network = lasagne.layers.Conv2DLayer(network, num_filters=256, filter_size=(3,3), pad='same',nonlinearity=lasagne.nonlinearities.rectify)
-	network = lasagne.layers.Conv2DLayer(network, num_filters=256, filter_size=(3,3), pad='same',nonlinearity=lasagne.nonlinearities.rectify)
+	network = lasagne.layers.Conv2DLayer(network, num_filters=256, filter_size=(5,5), pad='same',nonlinearity=lasagne.nonlinearities.rectify)
 	network = lasagne.layers.MaxPool2DLayer(network,pool_size=(2, 2))
 	print '	',lasagne.layers.get_output_shape(network)
-	'''
+	
 	network = lasagne.layers.DenseLayer(network,num_units=2048,nonlinearity=lasagne.nonlinearities.rectify)
 	print '	',lasagne.layers.get_output_shape(network)
 
-	network = lasagne.layers.DenseLayer(network,num_units=1024,nonlinearity=lasagne.nonlinearities.rectify)
-	print '	',lasagne.layers.get_output_shape(network)
-	'''
+	network =lasagne.layers.DropoutLayer(network,p=0.5)
+
+	#network = lasagne.layers.DenseLayer(network,num_units=1024,nonlinearity=lasagne.nonlinearities.rectify)
+	#print '	',lasagne.layers.get_output_shape(network)
+
+	#network =lasagne.layers.DropoutLayer(network,p=0.5)
+	
 	network = lasagne.layers.DenseLayer(network, num_units=40, nonlinearity = lasagne.nonlinearities.softmax)
 	print ('Output Layer:')
 	print '	',lasagne.layers.get_output_shape(network)
@@ -108,8 +112,8 @@ def main():
 
 	#MODIFY THESE
 	#*******************************************
-	trainTime = 1 #in hours
-	modelName='A3_3layer'
+	trainTime = 9 #in hours
+	modelName='A3_fc'
 	#*******************************************
 
 
@@ -168,7 +172,7 @@ def main():
 			sys.stdout.flush()
 			sys.stdout.write("\r %d training steps complete: %.2f%% done epoch in %ds" % (i + 1, percentage, timeElapsed))
 
-		limit = 3000
+		limit = 4000
 		tr_error, tr_accuracy = validator(trainingSet[:limit], trainingLabel[:limit])
 		v_error, v_accuracy = validator(validationSet[:limit], validationLabel[:limit])			     #pass modified data through network
 		record['tr_error'].append(tr_error); record['tr_accuracy'].append(tr_accuracy)
